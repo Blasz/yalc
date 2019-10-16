@@ -42,7 +42,7 @@ var installations_1 = require("./installations");
 var lockfile_1 = require("./lockfile");
 var _1 = require(".");
 exports.updatePackages = function (packages, options) { return __awaiter(_this, void 0, void 0, function () {
-    var workingDir, lockfile, packagesToUpdate, installationsToRemove, lockPackages, packagesFiles, packagesLinks, packagesLinkDep, packagesPure, _i, packages_1, packageName, pkg, postupdate;
+    var workingDir, lockfile, packagesToUpdate, installationsToRemove, lockPackages, purePackagesFiles, nonPurePackagesFiles, packagesLinks, packagesLinkDep, packagesPure, _i, packages_1, packageName, pkg, postupdate;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -77,12 +77,25 @@ exports.updatePackages = function (packages, options) { return __awaiter(_this, 
                     link: lockfile.packages[name].link,
                     pure: lockfile.packages[name].pure
                 }); });
-                packagesFiles = lockPackages.filter(function (p) { return p.file; }).map(function (p) { return p.name; });
-                return [4 /*yield*/, _1.addPackages(packagesFiles, {
+                purePackagesFiles = lockPackages
+                    .filter(function (p) { return p.file && p.pure; })
+                    .map(function (p) { return p.name; });
+                return [4 /*yield*/, _1.addPackages(purePackagesFiles, {
                         workingDir: options.workingDir,
+                        pure: true,
                         yarn: false
                     })];
             case 1:
+                _a.sent();
+                nonPurePackagesFiles = lockPackages
+                    .filter(function (p) { return p.file && !p.pure; })
+                    .map(function (p) { return p.name; });
+                return [4 /*yield*/, _1.addPackages(nonPurePackagesFiles, {
+                        workingDir: options.workingDir,
+                        pure: false,
+                        yarn: false
+                    })];
+            case 2:
                 _a.sent();
                 packagesLinks = lockPackages
                     .filter(function (p) { return !p.file && !p.link && !p.pure; })
@@ -93,7 +106,7 @@ exports.updatePackages = function (packages, options) { return __awaiter(_this, 
                         pure: false,
                         yarn: false
                     })];
-            case 2:
+            case 3:
                 _a.sent();
                 packagesLinkDep = lockPackages.filter(function (p) { return p.link; }).map(function (p) { return p.name; });
                 return [4 /*yield*/, _1.addPackages(packagesLinkDep, {
@@ -102,7 +115,7 @@ exports.updatePackages = function (packages, options) { return __awaiter(_this, 
                         pure: false,
                         yarn: false
                     })];
-            case 3:
+            case 4:
                 _a.sent();
                 packagesPure = lockPackages.filter(function (p) { return p.pure; }).map(function (p) { return p.name; });
                 return [4 /*yield*/, _1.addPackages(packagesPure, {
@@ -110,7 +123,7 @@ exports.updatePackages = function (packages, options) { return __awaiter(_this, 
                         pure: true,
                         yarn: false
                     })];
-            case 4:
+            case 5:
                 _a.sent();
                 for (_i = 0, packages_1 = packages; _i < packages_1.length; _i++) {
                     packageName = packages_1[_i];
@@ -121,12 +134,12 @@ exports.updatePackages = function (packages, options) { return __awaiter(_this, 
                         child_process_1.execSync(postupdate, { cwd: workingDir });
                     }
                 }
-                if (!!options.noInstallationsRemove) return [3 /*break*/, 6];
+                if (!!options.noInstallationsRemove) return [3 /*break*/, 7];
                 return [4 /*yield*/, installations_1.removeInstallations(installationsToRemove)];
-            case 5:
+            case 6:
                 _a.sent();
-                _a.label = 6;
-            case 6: return [2 /*return*/, installationsToRemove];
+                _a.label = 7;
+            case 7: return [2 /*return*/, installationsToRemove];
         }
     });
 }); };
