@@ -1,9 +1,6 @@
 export interface RemovePackagesOptions {
-  all?: boolean
-  retreat?: boolean
-  workingDir: string
+    all?: boolean;
+    retreat?: boolean;
+    workingDir: string;
 }
-export declare const removePackages: (
-  packages: string[],
-  options: RemovePackagesOptions
-) => Promise<void>
+export declare const removePackages: (packages: string[], options: RemovePackagesOptions) => Promise<void>;
