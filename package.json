@@ -12,9 +12,9 @@
     "singleQuote": true
   },
   "bin": {
-    "yalc": "src/yalc.js"
+    "yalc": "dist/yalc.js"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "clean": "trash **/*.js **/*.js.map **/*.d.ts **/*.log !**/node_modules/**",
